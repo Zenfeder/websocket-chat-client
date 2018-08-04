@@ -1,0 +1,2 @@
+// 全局配置信息
+export const FETCH_GLOBAL_CONFIG = 'FETCH_GLOBAL_CONFIG'

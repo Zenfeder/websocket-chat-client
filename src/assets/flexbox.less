@@ -1,0 +1,64 @@
+.flexbox {
+    display: -webkit-flex;
+    display: flex;
+}
+// 水平基准线
+// 垂直居上
+.fx-align-start {
+    .flexbox;
+    -webkit-align-items: flex-start;
+            align-items: flex-start;
+}
+// 垂直居中
+.fx-align-center {
+    .flexbox;
+    -webkit-align-items: center;
+            align-items: center;
+}
+// 垂直两端
+.fx-align-between {
+    .flexbox;
+    -webkit-align-items: space-between;
+            align-items: space-between;
+}
+// 垂直居下
+.fx-align-end {
+    .flexbox;
+    -webkit-align-items: flex-end;
+            align-items: flex-end;
+}
+
+// 垂直基准线
+// 水平居左
+.fx-justify-start {
+    .flexbox;
+    -webkit-justify-content: flex-start;
+            justify-content: flex-start;
+}
+// 水平居中
+.fx-justify-center {
+    .flexbox;
+    -webkit-justify-content: center;
+            justify-content: center;
+}
+// 水平两端对齐
+.fx-space-between {
+    .flexbox;
+    -webkit-justify-content: space-between;
+            justify-content: space-between;
+}
+// 水平居右
+.fx-justify-end {
+    .flexbox;
+    -webkit-justify-content: flex-end;
+            justify-content: flex-end;
+}
+
+// 水平垂直居中
+.fx-center {
+    .flexbox;
+    -webkit-align-items: center;
+            align-items: center;
+    -webkit-justify-content: center;
+            justify-content: center;
+}
