@@ -14,7 +14,7 @@
 import { getSocket } from '@/utils/socket'
 import session from '@/utils/session'
 
-const socket = getSocket()
+let socket = getSocket()
 
 export default {
   data () {
@@ -23,14 +23,7 @@ export default {
     }
   },
   created () {
-    socket.on('self join response', ({ success, message }) => {
-      if (success) {
-        session.set('nickname', this.nickname.trim())
-        this.$router.push({ name: 'chatBroadcast' })
-      } else {
-        this.$notify({ message })
-      }
-    })
+    session.clear()
   },
   methods: {
     join () {
@@ -39,6 +32,14 @@ export default {
         return false
       }
       socket.emit('join broadcast', nickname)
+      socket.on('self join response', ({ success, message }) => {
+        if (success) {
+          session.set('nickname', this.nickname.trim())
+          this.$router.push({ name: 'chatBroadcast' })
+        } else {
+          this.$notify({ message })
+        }
+      })
     }
   }
 }

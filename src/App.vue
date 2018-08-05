@@ -1,12 +1,32 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view :key="$route.fullPath"/>
   </div>
 </template>
 
 <script>
+import { getSocket } from '@/utils/socket'
+
+const socket = getSocket()
+
 export default {
-  name: 'App'
+  name: 'App',
+  created () {
+    const self = this
+    socket.on('receive private chat invite', ({ sendNickname, receiveNickname }) => {
+      let notify = this.$notify({
+        message: `${sendNickname} 邀请你私聊`,
+        duration: 5000,
+        onClick () {
+          notify.close()
+          self.$router.push({
+            name: 'chatPrivate',
+            params: { friendNickname: sendNickname }
+          })
+        }
+      })
+    })
+  }
 }
 </script>
 

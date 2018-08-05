@@ -28,7 +28,7 @@ export default new Router({
       component: chatGroup
     },
     {
-      path: '/chat/private',
+      path: '/chat/private/:friendNickname',
       name: 'chatPrivate',
       component: chatPrivate
     },

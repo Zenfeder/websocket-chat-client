@@ -1,6 +1,6 @@
 <template>
   <div class="app-layout page-chat_broadcast">
-    <div class="fixed-panel-top cl-green">
+    <div class="fixed-panel-top cl-blue">
       {{nicknameList.length}}人在线
     </div>
     <div class="content">
@@ -11,12 +11,15 @@
           v-if="item.type === 'user'"
           :key="index">
           <template v-if="item.value.nickname !== nickname">
-            <span class="user-nickname">
+            <span class="user-nickname" @click="chatPrivate(item.value.nickname)">
               {{item.value.nickname}}
             </span>
-            &nbsp;说&nbsp;
+            <span class="cl-gray-dark">&nbsp;说&nbsp;</span>
           </template>
-          <span class="user-message">{{item.value.message}}</span>
+          <span :class="{
+            'cl-green': item.value.nickname === nickname,
+            'cl-white': item.value.nickname !== nickname
+          }">{{item.value.message}}</span>
         </p>
         <p
           class="msg-item system-msg"
@@ -27,7 +30,7 @@
       </template>
     </div>
     <div class="fixed-panel-bottom fx-space-between fx-align-center">
-      <span class="cl-blue fz-20 fw-800">></span>
+      <span class="cl-green fz-20 fw-800">></span>
       <el-input
         class="input"
         v-model="broadcastMsg"
@@ -42,6 +45,7 @@
 <script>
 import { getSocket } from '@/utils/socket'
 import session from '@/utils/session'
+import storage from '@/utils/storage'
 
 const socket = getSocket()
 
@@ -59,7 +63,11 @@ export default {
     }
   },
   created () {
-    socket.on('get all connected nickname', nicknameList => {
+    this.checkLoginStatus()
+    this.initSystemTips()
+    this.updateOnlineInfo()
+
+    socket.on('push connected user list', nicknameList => {
       this.nicknameList = nicknameList
     })
     socket.on('user join broadcast', nickname => {
@@ -74,16 +82,16 @@ export default {
         value: `${nickname} 下车了`
       })
     })
-    socket.on('user typing broadcast message', nickname => {
-      this.messages.push({
-        type: 'system',
-        value: `${nickname} 正在输入...`
-      })
-    })
     socket.on('user broadcast message', ({ nickname, message }) => {
       this.messages.push({
         type: 'user',
         value: { nickname, message }
+      })
+    })
+    socket.on('user reconnected', nickname => {
+      this.messages.push({
+        type: 'system',
+        value: `${nickname} 重新建立连接`
       })
     })
   },
@@ -95,21 +103,31 @@ export default {
       }
     }
     socket.on('self reconnect response', ({ success, message }) => {
-      this.$notify({ message })
+      // this.$notify({ message, duration: 1500 })
       if (!success) {
         this.$router.push({ name: 'index' })
       }
     })
-    socket.on('user reconnected', nickname => {
-      this.messages.push({
-        type: 'system',
-        value: `${nickname} 重新建立连接`
-      })
-    })
   },
   methods: {
-    typing () {
-      socket.emit('typing broadcast message', this.nickname)
+    checkLoginStatus () {
+      if (!session.get('nickname')) {
+        this.$router.push({ name: 'index' })
+      }
+    },
+    updateOnlineInfo () {
+      socket.emit('pull connected user list')
+    },
+    initSystemTips () {
+      if (!storage.get('hideSystemTips')) {
+        this.$notify({
+          message: '点击用户昵称可进行私聊',
+          duration: 1500,
+          onClose () {
+            storage.set('hideSystemTips', true)
+          }
+        })
+      }
     },
     submitBroadcast () {
       if (!this.broadcastMsg.trim()) {
@@ -121,13 +139,13 @@ export default {
         value: { nickname: this.nickname, message: this.broadcastMsg }
       })
       this.broadcastMsg = ''
-    }
-  },
-  watch: {
-    broadcastMsg (newVal, oldVal) {
-      if (!oldVal.trim() && newVal.trim()) {
-        this.typing()
-      }
+    },
+    chatPrivate (receiveNickname) {
+      socket.emit('send private chat invite', { sendNickname: this.nickname, receiveNickname })
+      this.$router.push({
+        name: 'chatPrivate',
+        params: { friendNickname: receiveNickname }
+      })
     }
   }
 }
@@ -184,14 +202,11 @@ export default {
     }
     .user-nickname {
       cursor: pointer;
-      color: @blue;
+      color: @white;
       font-weight: 600;
       &:hover {
-        color: @blue + #333;
+        color: @gray-light;
       }
-    }
-    .user-message {
-      color: @gray;
     }
   }
 }
