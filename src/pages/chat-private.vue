@@ -20,7 +20,7 @@
       </template>
     </div>
     <div class="fixed-panel-bottom fx-space-between fx-align-center">
-      <span class="cl-green fz-20 fw-800">></span>
+      <span class="cl-blue fz-20 fw-800">></span>
       <el-input
         class="input"
         v-model="privateMsg"
@@ -125,7 +125,7 @@ export default {
   .fixed-panel-top {
     position: fixed;
     box-sizing: border-box;
-    padding: 10px;
+    padding: 20px 15px;
     width: 100%;
     height: 50px;
     right: 0;
@@ -142,7 +142,7 @@ export default {
     box-sizing: border-box;
     width: 100%;
     height: 50px;
-    padding: 10px;
+    padding: 20px 15px;
     left: 0;
     bottom: 0;
     background: @black;

@@ -4,13 +4,14 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
-import { Input, Button, Notification } from 'element-ui'
+import { Input, Button, Notification, MessageBox } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/index.less'
 
 Vue.use(Input)
 Vue.use(Button)
 Vue.prototype.$notify = Notification
+Vue.prototype.$prompt = MessageBox.prompt
 
 Vue.config.productionTip = false
 

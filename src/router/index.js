@@ -3,10 +3,8 @@ import Router from 'vue-router'
 
 import index from '@/pages/index'
 import chatBroadcast from '@/pages/chat-broadcast'
-import chatGroup from '@/pages/chat-group'
 import chatPrivate from '@/pages/chat-private'
-import addMemberGroup from '@/pages/add-member-group'
-import addMemberPrivate from '@/pages/add-member-private'
+import chatGroup from '@/pages/chat-group'
 
 Vue.use(Router)
 
@@ -23,24 +21,14 @@ export default new Router({
       component: chatBroadcast
     },
     {
-      path: '/chat/group',
-      name: 'chatGroup',
-      component: chatGroup
-    },
-    {
       path: '/chat/private/:friendNickname',
       name: 'chatPrivate',
       component: chatPrivate
     },
     {
-      path: '/add/member/group',
-      name: 'addMemberGroup',
-      component: addMemberGroup
-    },
-    {
-      path: '/add/member/private',
-      name: 'addPrivateMember',
-      component: addMemberPrivate
+      path: '/chat/group/:groupName',
+      name: 'chatGroup',
+      component: chatGroup
     },
     {
       path: '*',

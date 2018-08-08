@@ -1,7 +1,9 @@
 <template>
   <div class="app-layout page-chat_broadcast">
-    <div class="fixed-panel-top cl-blue">
-      {{nicknameList.length}}人在线
+    <div class="fixed-panel-top fx-space-between fx-align-center">
+      <span @click="joinGroup">加入群聊</span>
+      <span class="fz-22">广播室</span>
+      <span class="cl-blue">{{nicknameList.length}}人在线</span>
     </div>
     <div class="content">
       <template v-for="(item, index) in messages">
@@ -11,7 +13,7 @@
           v-if="item.type === 'user'"
           :key="index">
           <template v-if="item.value.nickname !== nickname">
-            <span class="user-nickname" @click="chatPrivate(item.value.nickname)">
+            <span class="user-nickname" @click="chatPrivateInvite(item.value.nickname)">
               {{item.value.nickname}}
             </span>
             <span class="cl-gray-dark">&nbsp;说&nbsp;</span>
@@ -30,7 +32,7 @@
       </template>
     </div>
     <div class="fixed-panel-bottom fx-space-between fx-align-center">
-      <span class="cl-green fz-20 fw-800">></span>
+      <span class="cl-blue fz-20 fw-800">></span>
       <el-input
         class="input"
         v-model="broadcastMsg"
@@ -140,12 +142,30 @@ export default {
       })
       this.broadcastMsg = ''
     },
-    chatPrivate (receiveNickname) {
+    chatPrivateInvite (receiveNickname) {
       socket.emit('send private chat invite', { sendNickname: this.nickname, receiveNickname })
       this.$router.push({
         name: 'chatPrivate',
         params: { friendNickname: receiveNickname }
       })
+    },
+    joinGroup () {
+      this.$prompt('请输入群组名称', '温馨提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPlaceholder: '请输入1-10位中文、字母、数字',
+        inputPattern: /^[\u4e00-\u9fa5_a-zA-Z0-9_]{1,10}$/
+      }).then(({ value }) => {
+        socket.emit('join group', { nickname: this.nickname, groupName: value })
+        socket.on('join group success', () => {
+          this.$router.push({
+            name: 'chatGroup',
+            params: {
+              groupName: value
+            }
+          })
+        })
+      }).catch(() => {})
     }
   }
 }
@@ -158,7 +178,8 @@ export default {
   .fixed-panel-top {
     position: fixed;
     box-sizing: border-box;
-    padding: 10px;
+    padding: 20px 15px;
+    width: 100%;
     height: 30px;
     right: 0;
     top: 0;
@@ -170,7 +191,7 @@ export default {
     box-sizing: border-box;
     width: 100%;
     height: 50px;
-    padding: 10px;
+    padding: 20px 15px;
     left: 0;
     bottom: 0;
     background: @black;
