@@ -62,7 +62,7 @@ export default {
   created () {
     this.checkLoginStatus()
     socket.on('user join group', ({ nickname, groupName }) => {
-      this.$notify({ message: `${nickname} 加入群聊`, duration: 5000 })
+      this.$notify({ message: `${nickname} 加入群聊`, duration: 1500 })
     })
     socket.on('receive group message', ({ sendNickname, message }) => {
       this.messages.push({ nickname: sendNickname, message })
@@ -125,7 +125,7 @@ export default {
     right: 0;
     top: 0;
     background: @black;
-    border-bottom: 1px solid @white;
+    border-bottom: 1px solid @gray-dark;
     z-index: 10;
     .goback:hover {
       cursor: pointer;
@@ -156,7 +156,7 @@ export default {
   .content {
     box-sizing: border-box;
     height: 100vh;
-    padding: 50px 10px 50px;
+    padding: 60px 15px 60px;
     overflow-y: auto;
     .msg-item {
       margin: 10px 0;

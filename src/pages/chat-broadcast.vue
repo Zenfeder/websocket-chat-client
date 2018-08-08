@@ -1,7 +1,7 @@
 <template>
   <div class="app-layout page-chat_broadcast">
     <div class="fixed-panel-top fx-space-between fx-align-center">
-      <span @click="joinGroup">加入群聊</span>
+      <span @click="joinGroup" class="join-group">加入群聊</span>
       <span class="fz-22">广播室</span>
       <span class="cl-blue">{{nicknameList.length}}人在线</span>
     </div>
@@ -150,7 +150,7 @@ export default {
       })
     },
     joinGroup () {
-      this.$prompt('请输入群组名称', '温馨提示', {
+      this.$prompt('请输入群组名称', '加入群聊', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         inputPlaceholder: '请输入1-10位中文、字母、数字',
@@ -180,11 +180,19 @@ export default {
     box-sizing: border-box;
     padding: 20px 15px;
     width: 100%;
-    height: 30px;
+    height: 50px;
     right: 0;
     top: 0;
     background: @black;
+    border-bottom: 1px solid @gray-dark;
     z-index: 10;
+    .join-group {
+      cursor: pointer;
+      color: @white;
+      &:hover {
+        color: @gray-light;
+      }
+    }
   }
   .fixed-panel-bottom {
     position: fixed;
@@ -211,7 +219,7 @@ export default {
   .content {
     box-sizing: border-box;
     height: 100vh;
-    padding: 30px 10px 50px;
+    padding: 60px 15px 60px;
     overflow-y: auto;
     .msg-item {
       margin: 10px 0;

@@ -1,5 +1,14 @@
+@import './color.less';
 .el-notification {
   border-radius: 0;
   border: none;
   background-color: rgba(255, 255, 255, .8);
+}
+.el-message-box {
+  width: 80%;
+  background-color: @black;
+  border: 1px solid @blue;
+  .el-message-box__title, .el-message-box__message {
+    color: @silver;
+  }
 }
