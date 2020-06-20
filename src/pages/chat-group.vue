@@ -34,6 +34,7 @@
         placeholder="少侠，有话请在这儿讲..."
         :autofocus="true"
         @keyup.native.enter="submitGroupMsg"></el-input>
+      <el-button type="primary" size="small" @click="submitGroupMsg">发送</el-button>
     </div>
   </div>
 </template>

@@ -7,6 +7,7 @@
       placeholder="报上大名赶紧上车..."
       :autofocus="true"
       @keyup.native.enter="join"></el-input>
+    <el-button type="primary" size="small" @click="join">上车</el-button>
   </div>
 </template>
 

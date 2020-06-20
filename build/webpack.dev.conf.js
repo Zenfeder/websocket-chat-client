@@ -13,7 +13,7 @@ const portfinder = require('portfinder')
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
-const DEV_API_PATH = process.env.DEV_API_PATH || `http://localhost:8081`
+const DEV_API_PATH = process.env.DEV_API_PATH || `http://127.0.0.1:8081`
 console.log(`> DEV_API_PATH = ${DEV_API_PATH}`)
 
 const devWebpackConfig = merge(baseWebpackConfig, {

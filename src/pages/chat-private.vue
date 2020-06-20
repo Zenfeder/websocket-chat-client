@@ -28,6 +28,7 @@
         placeholder="少侠，有话请在这儿讲..."
         :autofocus="true"
         @keyup.native.enter="submitPrivateMsg"></el-input>
+      <el-button type="primary" size="small" @click="submitPrivateMsg">发送</el-button>
     </div>
   </div>
 </template>
